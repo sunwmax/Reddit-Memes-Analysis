@@ -29,7 +29,7 @@ USER_PARAMS = {
 ```
 5. Run the collector
 ```
-python run.py
+python main.py
 ```
 
 # Analysis
