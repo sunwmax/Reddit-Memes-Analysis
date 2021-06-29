@@ -1,15 +1,15 @@
 from types import GeneratorType
-from typing import Iterable
+from typing import Iterable, Union
 import praw
 import os
 from datetime import datetime, timezone
+from prawcore.exceptions import NotFound
 
 class MemeStatsScraper:
 
     def __init__(self, user_agent: str, client_id: str, client_secret: str):
         self.reddit = praw.Reddit(user_agent = user_agent, client_id = client_id, client_secret = client_secret)
         print(f"Reddit instance made in {os.getcwd()}")
-        self.newest_id = None
 
     # See if there's a fix for time offset, praw returns local time
     def __unix_to_utc_string(self, unix_time: float):
@@ -29,14 +29,21 @@ class MemeStatsScraper:
     def __meme_data_compiler(self, memes: GeneratorType):
         return [self.__meme_data_formatter(meme) for meme in memes]
     
-    def __remove_stickied(self, memes: GeneratorType):
-        return (meme for meme in memes if not meme.stickied)
+    def __find_stickied_id(self):
+        stickied_id = ""
+        try:
+            stickied_id = self.reddit.subreddit("memes").sticky(1).id
+            stickied_id = self.reddit.subreddit("memes").sticky(2).id
+        except NotFound:
+            pass
+        return stickied_id
 
     def find_hot(self, top: int):
-        stickied_memes = self.reddit.subreddit("memes").hot(limit = 2)
-        stickied_meme_count = sum([True for meme in stickied_memes if meme.stickied])
-        memes = self.reddit.subreddit("memes").hot(limit = top + stickied_meme_count)
-        memes = self.__remove_stickied(memes)
+        params = {}
+        stickied_id = self.__find_stickied_id()
+        if stickied_id:
+            params["after"] = f"t3_{stickied_id}"
+        memes = self.reddit.subreddit("memes").hot(limit = top, params = params)
         results = self.__meme_data_compiler(memes)
         return results
 
@@ -48,9 +55,15 @@ class MemeStatsScraper:
         results = self.__meme_data_compiler(memes)
         return results
 
+    # This will be deprecated
     def find_specific(self, meme_id: str):
         meme = self.reddit.submission(meme_id)
         return self.__meme_data_formatter(meme)
+
+    def find_multi_specific(self, meme_ids: Union[str, Iterable[str]]):
+        memes = self.reddit.info([f"t3_{meme_id}" for meme_id in meme_ids])
+        results = self.__meme_data_compiler(memes)
+        return results
 
     def is_removed(self, meme_id: str):
         meme = self.reddit.submission(meme_id)

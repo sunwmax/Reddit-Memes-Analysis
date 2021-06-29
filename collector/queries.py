@@ -5,8 +5,8 @@ MEME_INFO_CREATION_QUERY = """
         title VARCHAR(300) NOT NULL,
         creation_time DATETIME NOT NULL,
         entered_hot BOOLEAN NOT NULL,
-        meme_url VARCHAR(100) NOT NULL,
-        post_url VARCHAR(100) NOT NULL,
+        meme_url VARCHAR(300) NOT NULL,
+        post_url VARCHAR(300) NOT NULL,
         PRIMARY KEY (meme_id)
     );
     """
