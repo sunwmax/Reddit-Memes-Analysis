@@ -1,0 +1,12 @@
+certifi==2021.5.30
+chardet==4.0.0
+idna==2.10
+mysql==0.0.3
+mysql-connector==2.2.9
+mysqlclient==2.0.3
+praw==7.3.0
+prawcore==2.2.0
+requests==2.25.1
+update-checker==0.18.0
+urllib3==1.26.6
+websocket-client==1.1.0
