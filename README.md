@@ -35,5 +35,5 @@ python run.py
 # Analysis
 Coming soon!
 
-# Visulization
+# Visualization
 Coming soon!
