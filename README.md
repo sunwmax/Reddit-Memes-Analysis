@@ -10,7 +10,7 @@ This project repo consists of three parts:
 # Collector
 How to use:
 1. <a href = "https://www.reddit.com/prefs/apps">Apply</a> for a reddit bot
-2. Apply for a MySQL instance
+2. Apply for a local MySQL instance
 3. Git clone this repo
 4. Configure ```config.py```
 ```
