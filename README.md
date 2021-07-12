@@ -27,13 +27,18 @@ USER_PARAMS = {
     }
 }
 ```
-5. Run the collector
+5. Install required dependencies
+```
+pip install -r requirements.txt
+```
+6. Run the collector
 ```
 python main.py
 ```
 
 # Analysis
-Coming soon!
+(2021.7.12 New)
+Sample Data is uploaded in \Analysis\Sample Data.
 
 # Visualization
 Coming soon!
